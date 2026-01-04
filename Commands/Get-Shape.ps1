@@ -82,11 +82,24 @@ function Get-Shape {
         '#4488ff', '#224488' | Gradient # We can pipe into gradient
     
     #>
-    [Alias('Shape')]
+    [Alias('Shape',
+        'circle','ellipse',
+        'inset','rect',
+        'polygon','path2d','xywh',
+        'css.circle', 'css.ellipse', 
+        'css.inset', 'css.rect', 
+        'css.polygon', 'css.path2d', 'css.xywh'
+    )]
     param()
 
     # All this function does is gather all of the input and arguments
     $allIn = @($input) + @($args)
+
+    if ($MyInvocation.InvocationName -notin '&', '.', 'Shape', 'Get-Shape') {
+        $allIn = @(
+            "$($MyInvocation.InvocationName -replace '^CSS\p{P}?' -replace '2d$')".ToLower()
+        ) + $allIn
+    }
 
     # and create a custom object.
     [PSCustomObject]@{
