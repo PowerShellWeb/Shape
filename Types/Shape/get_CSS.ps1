@@ -43,11 +43,10 @@ if (-not $ShapeType) { $ShapeType = 'shape'}
                 }) -join ', '
             }
             shape {
-                # Shapes segments start with keywords, and each segment should be separated by commas
-                
+                # Shapes segments start with keywords, and each segment should be separated by commas                
                 $keyPattern = "^(?>$(
                     'arc', 'curve', 'close', 'move', '[hv]?line', 'smooth' -join '|'
-                ))$"
+                ))"
 
                 $buffer = @()
                 @(
@@ -59,11 +58,10 @@ if (-not $ShapeType) { $ShapeType = 'shape'}
                         if ($shapeValues[$valueIndex] -eq ',') {
                             continue
                         }
-                        $buffer += $shapeValues[$valueIndex]
+                        $buffer+= $shapeValues[$valueIndex]
                     }
                     if ($buffer) {$buffer -join ' '}
-                ) -join ', '                                
-                
+                ) -join ', '
             }
             
             default {
