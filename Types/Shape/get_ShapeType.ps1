@@ -11,4 +11,4 @@ if (-not $shapeTypes) {
 if ($shapeTypes.Count -gt 1) {
     Write-Warning "There can be only one (shape type).  Using $($shapeTypes[0])"      
 }
-return $shapeTypes[0]
+return $shapeTypes[0].ToLower()
