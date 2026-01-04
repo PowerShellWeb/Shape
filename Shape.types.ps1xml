@@ -14,6 +14,18 @@
           </PropertySet>
         </Members>
       </MemberSet>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Stringifies the shape
+.DESCRIPTION
+    Gets the shape as a string by returning the shape's `.css`
+#&gt;
+return "$($this.CSS)"
+                    </Script>
+      </ScriptMethod>
       <ScriptProperty>
         <Name>CSS</Name>
         <GetScriptBlock>
