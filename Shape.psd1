@@ -79,11 +79,15 @@ FunctionsToExport = 'Get-Shape'
 
 # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
 AliasesToExport = 'Shape', 'circle','ellipse',
+    'circle','ellipse',
     'inset','rect',
-    'polygon','path2d','xywh',
+    'polygon',
+    # Not aliasing to `path` due to potential confusion.
+    'path2d',
+    'xywh', 
     'css.circle', 'css.ellipse', 
     'css.inset', 'css.rect', 
-    'css.polygon', 'css.path2d', 'css.xywh'
+    'css.polygon', 'css.path','css.path2d', 'css.xywh'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()

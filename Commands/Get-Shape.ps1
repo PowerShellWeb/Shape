@@ -85,10 +85,13 @@ function Get-Shape {
     [Alias('Shape',
         'circle','ellipse',
         'inset','rect',
-        'polygon','path2d','xywh',
+        'polygon',
+        # Not aliasing to `path` due to potential confusion
+        'path2d',
+        'xywh', 
         'css.circle', 'css.ellipse', 
         'css.inset', 'css.rect', 
-        'css.polygon', 'css.path2d', 'css.xywh'
+        'css.polygon', 'css.path','css.path2d', 'css.xywh'
     )]
     param()
 
