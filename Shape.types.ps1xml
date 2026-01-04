@@ -57,6 +57,14 @@ $joinWith = if ($ShapeType -notin 'shape') {
 
                     </GetScriptBlock>
       </ScriptProperty>
+      <ScriptProperty>
+        <Name>ShapeTypePattern</Name>
+        <GetScriptBlock>
+                        $shapeHelp = $this.Help
+
+"(?&gt;$($shapeHelp.Keys -join '|'))"
+                    </GetScriptBlock>
+      </ScriptProperty>
     </Members>
   </Type>
 </Types>
