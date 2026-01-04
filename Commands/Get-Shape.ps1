@@ -43,44 +43,7 @@ function Get-Shape {
             "body { max-width: 100vw; width: 100vh }"
             ".tri { width: 100%; height: 100%; background: #4488ff; clip-path:$(shape polygon 50% 0% 100% 100% 0% 100%)}"
             "</style></head><body><div class='tri'></div></body></html>"
-        ) > ./tri.html
-    .EXAMPLE
-        # Make a page with a random conic gradient
-        
-        $gradient = @(
-            "conic"
-            # Make 2 to 4 random colors
-            foreach ($n in 1..(Get-Random -Min 2 -Max 4)) {
-                "#{0:x6}" -f (Get-Random -Max 0xffffff)
-            }
-        ) | gradient
-        # Generate a minimal page with the gradient
-        @(
-            
-            "<html><head><style>"
-            "body { max-width: 100vw; width: 100vh; background:$gradient}"
-            "</style></head></html>"
-        ) > ./randomconicgradient.html
-    .EXAMPLE    
-        # Make a page with a random linear gradient
-        
-        $gradient = @(
-            "linear"
-            # Make 2 to 4 random colors
-            foreach ($n in 1..(Get-Random -Min 2 -Max 4)) {
-                "#{0:x6}" -f (Get-Random -Max 0xffffff)
-            }
-        ) | gradient
-        # Generate a minimal page with the gradient
-        @(
-            
-            "<html><head><style>"
-            "body { max-width: 100vw; width: 100vh; background:$gradient}"
-            "</style></head></html>"
-        ) > ./randomlineargradient.html
-    .EXAMPLE
-        '#4488ff', '#224488' | Gradient # We can pipe into gradient
-    
+        ) > ./tri.html    
     #>
     [Alias('Shape',
         'circle','ellipse',

@@ -1,3 +1,4 @@
+@"
 
 # Shape
 
@@ -5,17 +6,17 @@
 
 [CSS Shapes](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Shapes) are pretty amazing!
 
-There are 8 shape types:
+There are $((shape).Help.Count) shape types:
 
-* [circle](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/circle)
-* [ellipse](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/ellipse)
-* [inset](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/inset)
-* [path](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path)
-* [polygon](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/polygon)
-* [rect](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/rect)
-* [shape](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/shape)
-* [xywh](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/xywh)
-Unfortunately, that also means there are 8 _slightly_ different ways to write a shape.
+"@
+
+$shapeHelp = (shape).Help
+foreach ($shapeType in $shapeHelp.Keys) {
+    "* [$shapeType]($($shapeHelp[$shapeType]))"
+}
+
+@"
+Unfortunately, that also means there are $($shapeHelp.Count) _slightly_ different ways to write a shape.
 
 Polygons work in pairs.  Paths must be quoted.
 
@@ -23,6 +24,10 @@ Most others need to be joined with spaces,
 but shape itself needs to be joined with spaces and commas before keywords. 
 
 This module exists in order to make it _slightly_ easier to generate shapes. 
+"@
+
+
+@"
 
 ## Installing and Importing
 
@@ -47,6 +52,10 @@ git clone https://github.com/PowerShellWeb/Shape
 cd ./Shape
 Import-Module ./ -PassThru
 ~~~
+"@
+
+
+@'
 
 
 ## Getting Started
@@ -102,3 +111,4 @@ Here's a page with nothing but an inset path:
 You can use the shape module to generate any CSS shape.
 
 Have Fun!
+'@
