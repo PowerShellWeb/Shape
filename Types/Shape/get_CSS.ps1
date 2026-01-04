@@ -21,28 +21,56 @@ $shapeValues = @(foreach ($in in $this.input) {
 
 if (-not $ShapeType) { $ShapeType = 'shape'}
 
-if ($ShapeType -eq 'polygon') {
-    return "polygon($(
-        @(for ($valueIndex = 0; $valueIndex -lt $shapeValues.Count; $valueIndex += 2) {
-            @(if ($null -ne $shapeValues[$valueIndex + 1]) {
-                $shapeValues[$valueIndex]
-                $shapeValues[$valueIndex + 1]
-            } else {
-                $shapeValues[$valueIndex]
-                $shapeValues[$valueIndex]                
-            }) -join ' '
-        }) -join ', '
-    ))"
-}
+@(
+    "$shapeType("
+        switch ($shapeType) {
+            path {
+                # Only paths need to be quoted
+                "'$($shapeValues -join ' ' -replace "'", "\'" -replace [Environment]::NewLine, '\')'"
+            }
+            polygon {
+                # Polygons need to be in comma separated pairs, 
+                # and could come as pairs or comma separated pairs
+                $shapeValues = @($shapeValues -replace ',' -ne '')
+                @(for ($valueIndex = 0; $valueIndex -lt $shapeValues.Count; $valueIndex += 2) {
+                    @(if ($null -ne $shapeValues[$valueIndex + 1]) {
+                        $shapeValues[$valueIndex]
+                        $shapeValues[$valueIndex + 1]
+                    } else {
+                        $shapeValues[$valueIndex]
+                        $shapeValues[$valueIndex]                
+                    }) -join ' '
+                }) -join ', '
+            }
+            shape {
+                # Shapes segments start with keywords, and each segment should be separated by commas
+                
+                $keyPattern = "^(?>$(
+                    'arc', 'curve', 'close', 'move', '[hv]?line', 'smooth' -join '|'
+                ))$"
 
-$joinWith = if ($ShapeType -notin 'shape') {
-    ' '
-} else {
-    ', '
-}
- 
-"$shapeType($(
-    @(
-        $shapeValues
-    ) -join $joinWith
-))"
+                $buffer = @()
+                @(
+                    for ($valueIndex = 0; $valueIndex -lt $shapeValues.Count; $valueIndex++) {
+                        if ($shapeValues[$valueIndex] -match $keyPattern) {
+                            if ($buffer) { $buffer -join ' ' } 
+                            $buffer = @()
+                        }
+                        if ($shapeValues[$valueIndex] -eq ',') {
+                            continue
+                        }
+                        $buffer += $shapeValues[$valueIndex]
+                    }
+                    if ($buffer) {$buffer -join ' '}
+                ) -join ', '                                
+                
+            }
+            
+            default {
+                # all other shapes simply join their values with spaces
+                $shapeValues -join ' '    
+            }
+        }    
+    ")" 
+) -join ''
+
