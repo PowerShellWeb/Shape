@@ -3,6 +3,17 @@
   <Type>
     <Name>Shape</Name>
     <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>CSS</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
       <ScriptProperty>
         <Name>CSS</Name>
         <GetScriptBlock>
@@ -101,6 +112,10 @@ return $shapeTypes[0]
 "(?&gt;$($shapeHelp.Keys -join '|'))"
                     </GetScriptBlock>
       </ScriptProperty>
+      <NoteProperty>
+        <Name>DefaultDisplay</Name>
+        <Value>CSS</Value>
+      </NoteProperty>
     </Members>
   </Type>
 </Types>
