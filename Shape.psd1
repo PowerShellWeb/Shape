@@ -87,7 +87,8 @@ AliasesToExport = 'Shape', 'circle','ellipse',
     'xywh', 
     'css.circle', 'css.ellipse', 
     'css.inset', 'css.rect', 
-    'css.polygon', 'css.path','css.path2d', 'css.xywh'
+    'css.polygon', 'css.path','css.path2d', 'css.xywh',
+    'css.shape'
 
 # DSC resources to export from this module
 # DscResourcesToExport = @()
