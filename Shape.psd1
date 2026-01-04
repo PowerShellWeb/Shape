@@ -60,7 +60,7 @@ Description = 'CSS Shape Generator'
 # ScriptsToProcess = @()
 
 # Type files (.ps1xml) to be loaded when importing this module
-# TypesToProcess = 'Shape.types.ps1xml'
+TypesToProcess = 'Shape.types.ps1xml'
 
 # Format files (.ps1xml) to be loaded when importing this module
 # FormatsToProcess = @()
