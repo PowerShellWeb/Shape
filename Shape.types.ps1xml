@@ -1,0 +1,159 @@
+<!-- Generated with EZOut 2.0.6: Install-Module EZOut or https://github.com/StartAutomating/EZOut -->
+<Types>
+  <Type>
+    <Name>Shape</Name>
+    <Members>
+      <MemberSet>
+        <Name>PSStandardMembers</Name>
+        <Members>
+          <PropertySet>
+            <Name>DefaultDisplayPropertySet</Name>
+            <ReferencedProperties>
+              <Name>CSS</Name>
+            </ReferencedProperties>
+          </PropertySet>
+        </Members>
+      </MemberSet>
+      <ScriptMethod>
+        <Name>ToString</Name>
+        <Script>
+                        &lt;#
+.SYNOPSIS
+    Stringifies the shape
+.DESCRIPTION
+    Gets the shape as a string by returning the shape's `.css`
+#&gt;
+return "$($this.CSS)"
+                    </Script>
+      </ScriptMethod>
+      <ScriptProperty>
+        <Name>CSS</Name>
+        <GetScriptBlock>
+                        &lt;#
+.SYNOPSIS
+    Gets Shapes as CSS
+.DESCRIPTION
+    Gets the Shape as CSS.
+.EXAMPLE
+    shape circle 50% |
+        Select-Object -Expand CSS
+#&gt;
+param()
+
+$ShapeType = 'shape'
+
+# Get our gradient type
+$ShapeType = $this.ShapeType
+$shapeValues = @(foreach ($in in $this.input) {
+    if ($in -notmatch $this.ShapeTypePattern) {
+        $in
+    }
+})
+
+if (-not $ShapeType) { $ShapeType = 'shape'}
+
+@(
+    "$shapeType("
+        switch ($shapeType) {
+            path {
+                # Only paths need to be quoted
+                "'$($shapeValues -join ' ' -replace "'", "\'" -replace [Environment]::NewLine, '\')'"
+            }
+            polygon {
+                # Polygons need to be in comma separated pairs, 
+                # and could come as pairs or comma separated pairs
+                $shapeValues = @($shapeValues -replace ',' -ne '')
+                @(for ($valueIndex = 0; $valueIndex -lt $shapeValues.Count; $valueIndex += 2) {
+                    @(if ($null -ne $shapeValues[$valueIndex + 1]) {
+                        $shapeValues[$valueIndex]
+                        $shapeValues[$valueIndex + 1]
+                    } else {
+                        $shapeValues[$valueIndex]
+                        $shapeValues[$valueIndex]                
+                    }) -join ' '
+                }) -join ', '
+            }
+            shape {
+                # Shapes segments start with keywords, and each segment should be separated by commas                
+                $keyPattern = "^(?&gt;$(
+                    'arc', 'curve', 'close', 'move', '[hv]?line', 'smooth' -join '|'
+                ))"
+
+                $buffer = @()
+                @(
+                    for ($valueIndex = 0; $valueIndex -lt $shapeValues.Count; $valueIndex++) {
+                        if ($shapeValues[$valueIndex] -match $keyPattern) {
+                            if ($buffer) { $buffer -join ' ' } 
+                            $buffer = @()
+                        }
+                        if ($shapeValues[$valueIndex] -eq ',') {
+                            continue
+                        }
+                        $buffer+= $shapeValues[$valueIndex]
+                    }
+                    if ($buffer) {$buffer -join ' '}
+                ) -join ', '
+            }
+            
+            default {
+                # all other shapes simply join their values with spaces
+                $shapeValues -join ' '    
+            }
+        }    
+    ")" 
+) -join ''
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>Help</Name>
+        <GetScriptBlock>
+                        return [Ordered]@{
+    'circle' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/circle'
+    'ellipse' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/ellipse'
+    'inset' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/inset'
+    'path' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/path'
+    'polygon' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/polygon'
+    'rect' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/rect'
+    'shape' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/shape'
+    'xywh' = 'https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/basic-shape/xywh'    
+}
+
+
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ShapeType</Name>
+        <GetScriptBlock>
+                        $shapeTypes = @(foreach ($in in $this.input) {
+    if ($in -match $this.ShapeTypePattern) {
+        $matches.0
+    }
+})
+
+
+if (-not $shapeTypes) {
+    return "shape"
+} 
+if ($shapeTypes.Count -gt 1) {
+    Write-Warning "There can be only one (shape type).  Using $($shapeTypes[0])"      
+}
+return $shapeTypes[0].ToLower()
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <ScriptProperty>
+        <Name>ShapeTypePattern</Name>
+        <GetScriptBlock>
+                        $shapeHelp = $this.Help
+
+"(?&gt;$($shapeHelp.Keys -join '|'))"
+                    </GetScriptBlock>
+      </ScriptProperty>
+      <NoteProperty>
+        <Name>DefaultDisplay</Name>
+        <Value>CSS</Value>
+      </NoteProperty>
+    </Members>
+  </Type>
+</Types>
